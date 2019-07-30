@@ -2,7 +2,7 @@
 import random
 import math
 import time
-from src.cell import Cell
+from pymaze.cell import Cell
 
 
 class Maze(object):
@@ -35,6 +35,10 @@ class Maze(object):
         self.num_rows = num_rows
         self.id = id
         self.grid_size = num_rows*num_cols
+
+        rstate = random.getstate()
+        random.seed(self.id)
+
         self.entry_coor = self._pick_random_entry_exit(None)
         self.exit_coor = self._pick_random_entry_exit(self.entry_coor)
         self.generation_path = []
@@ -42,6 +46,8 @@ class Maze(object):
         self.initial_grid = self.generate_grid()
         self.grid = self.initial_grid
         self.generate_maze((0, 0))
+
+        random.setstate(rstate)
 
     def generate_grid(self):
         """Function that creates a 2D grid of Cell objects. This can be thought of as a
@@ -203,8 +209,8 @@ class Maze(object):
         visit_counter = 1                       # To count number of visited cells
         visited_cells = list()                  # Stack of visited cells for backtracking
 
-        print("\nGenerating the maze with depth-first search...")
-        time_start = time.clock()
+        #print("\nGenerating the maze with depth-first search...")
+        #time_start = time.clock()
 
         while visit_counter < self.grid_size:     # While there are unvisited cells
             neighbour_indices = self.find_neighbours(k_curr, l_curr)    # Find neighbour indicies
@@ -225,13 +231,13 @@ class Maze(object):
                 k_curr, l_curr = visited_cells.pop()      # Pop previous visited cell (backtracking)
                 path.append((k_curr, l_curr))   # Add coordinates to part of generation path
 
-        print("Number of moves performed: {}".format(len(path)))
-        print("Execution time for algorithm: {:.4f}".format(time.clock() - time_start))
+        #print("Number of moves performed: {}".format(len(path)))
+        #print("Execution time for algorithm: {:.4f}".format(time.clock() - time_start))
 
-        self.grid[self.entry_coor[0]][self.entry_coor[1]].set_as_entry_exit("entry",
-            self.num_rows-1, self.num_cols-1)
-        self.grid[self.exit_coor[0]][self.exit_coor[1]].set_as_entry_exit("exit",
-            self.num_rows-1, self.num_cols-1)
+        #self.grid[self.entry_coor[0]][self.entry_coor[1]].set_as_entry_exit("entry",
+        #    self.num_rows-1, self.num_cols-1)
+        #self.grid[self.exit_coor[0]][self.exit_coor[1]].set_as_entry_exit("exit",
+        #    self.num_rows-1, self.num_cols-1)
 
         for i in range(self.num_rows):
             for j in range(self.num_cols):

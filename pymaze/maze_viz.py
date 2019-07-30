@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 
 class Visualizer(object):
@@ -37,7 +37,7 @@ class Visualizer(object):
         """
         self.media_filename = filename
 
-    def show_maze(self):
+    def show_maze(self,show=False,filename=None):
         """Displays a plot of the maze without the solution path"""
 
         # Create the plot figure and style the axes
@@ -45,13 +45,16 @@ class Visualizer(object):
 
         # Plot the walls on the figure
         self.plot_walls()
+        fig.savefig(filename, frameon=None)
 
         # Display the plot to the user
-        plt.show()
+        if show:
+            plt.show()
 
         # Handle any potential saving
-        if self.media_filename:
-            fig.savefig("{}{}.png".format(self.media_filename, "_generation"), frameon=None)
+        if filename is not None:
+            fig.tight_layout()
+
 
     def plot_walls(self):
         """ Plots the walls of a maze. This is used when generating the maze image"""
